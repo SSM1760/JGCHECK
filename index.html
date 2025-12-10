@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>어린이집·유치원 위생·안전 자체점검 체크리스트</title>
+
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --line: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --brand: #2563eb;
+      --ok: #16a34a;
+      --danger: #dc2626;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: system-ui, -apple-system, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px 24px 32px;
+      box-shadow: 0 8px 20px rgba(15,23,42,0.08);
+      border: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+
+    .info-row label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .info-row input[type="text"],
+    .info-row input[type="date"] {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.9rem;
+    }
+
+    .guide-box {
+      border-radius: 10px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 10px 12px;
+      font-size: 0.85rem;
+      color: #1d4ed8;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .item {
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      padding: 12px 12px 10px;
+      background: #f9fafb;
+    }
+
+    .item-header {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: flex-start;
+    }
+
+    .item-index {
+      font-weight: 600;
+      color: var(--brand);
+      min-width: 20px;
+    }
+
+    .item-label {
+      font-weight: 500;
+    }
+
+    .item-options {
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .item-options label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .item-options input[type="radio"] {
+      accent-color: var(--brand);
+    }
+
+    .item-memo {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.85rem;
+    }
+
+    .item-memo label { color: var(--muted); }
+
+    .item-memo textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      padding: 6px 8px;
+      resize: vertical;
+      min-height: 48px;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .status {
+      min-height: 1.2em;
+      color: var(--muted);
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--danger); }
+
+    .footer-note {
+      margin-top: 20px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--line);
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    @media (max-width: 600px) {
+      .wrapper {
+        padding: 16px 12px 24px;
+      }
+      .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h1>어린이집·유치원 위생·안전 자체점검 체크리스트</h1>
+    <div class="subtitle">※ 각 항목별로 적합·부적합을 선택하고, 필요한 경우 아래 메모란에 개선사항을 기록해 주세요.</div>
+
+    <!-- 기본 정보 -->
+    <div class="info-row">
+      <label>기관명
+        <input type="text" id="orgName" placeholder="예: ○○어린이집" />
+      </label>
+      <label>점검일
+        <input type="date" id="checkDate" />
+      </label>
+      <label>점검자
+        <input type="text" id="checker" placeholder="이름" />
+      </label>
+    </div>
+
+    <div class="guide-box">
+      ✔ “부적합”을 선택한 항목은 아래 메모칸에 <strong>개선 계획(무엇을, 언제까지, 어떻게)</strong>를 간단히 적어 주세요.<br>
+      ✔ 아래 <strong>“센터에 전송” 버튼</strong>을 누르면 점검 결과가 센터 구글시트에 자동 저장됩니다.
+    </div>
+
+    <!-- 체크리스트 시작 -->
+    <div class="checklist" id="checklistArea">
+
+      <!-- 1번 항목 -->
+      <div class="item">
+        <div class="item-header">
+          <div class="item-index">1.</div>
+          <div class="item-label">조리실·배식실 바닥, 벽, 작업대가 청결하게 유지되고 있다.</div>
+        </div>
+        <div class="item-options">
+          <label><input type="radio" name="item1" value="적합"> 적합</label>
+          <label><input type="radio" name="item1" value="부적합"> 부적합</label>
+        </div>
+        <div class="item-memo">
+          <label for="memo1">메모 / 개선계획</label>
+          <textarea id="memo1" name="memo1" placeholder="예: 배식실 출입구 주변 주 1회 추가 청소 예정(○월 ○일까지)."></textarea>
+        </div>
+      </div>
+
+      <!-- 2번 항목 -->
+      <div class="item">
+        <div class="item-header">
+          <div class="item-index">2.</div>
+          <div class="item-label">냉장·냉동고에는 유통기한이 경과한 식재료가 없으며, 식재 라벨(품명·개봉일·유통기한)이 부착되어 있다.</div>
+        </div>
+        <div class="item-options">
+          <label><input type="radio" name="item2" value="적합"> 적합</label>
+          <label><input type="radio" name="item2" value="부적합"> 부적합</label>
+        </div>
+        <div class="item-memo">
+          <label for="memo2">메모 / 개선계획</label>
+          <textarea id="memo2" name="memo2" placeholder="예: 일부 냉장 식재 라벨 누락 → 전담자 지정, 매주 월요일 점검."></textarea>
+        </div>
+      </div>
+
+      <!-- 3번 항목 -->
+      <div class="item">
+        <div class="item-header">
+          <div class="item-index">3.</div>
+          <div class="item-label">조리종사자는 조리 시 앞치마·모자 등 위생복을 착용하고, 손 씻기·손 소독을 충분히 시행하고 있다.</div>
+        </div>
+        <div class="item-options">
+          <label><input type="radio" name="item3" value="적합"> 적합</label>
+          <label><input type="radio" name="item3" value="부적합"> 부적합</label>
+        </div>
+        <div class="item-memo">
+          <label for="memo3">메모 / 개선계획</label>
+          <textarea id="memo3" name="memo3" placeholder="예: 손 씻기 교육자료 게시, 월 1회 실습교육 실시 계획."></textarea>
+        </div>
+      </div>
+
+      <!-- 4번 항목 -->
+      <div class="item">
+        <div class="item-header">
+          <div class="item-index">4.</div>
+          <div class="item-label">도마·칼 등 조리도구는 용도별(육류·어류·채소 등)로 구분하여 사용·보관하고 있다.</div>
+        </div>
+        <div class="item-options">
+          <label><input type="radio" name="item4" value="적합"> 적합</label>
+          <label><input type="radio" name="item4" value="부적합"> 부적합</label>
+        </div>
+        <div class="item-memo">
+          <label for="memo4">메모 / 개선계획</label>
+          <textarea id="memo4" name="memo4" placeholder="예: 색깔별 도마 표시 테이프 교체, 구분표 부착 예정."></textarea>
+        </div>
+      </div>
+
+      <!-- 5번 항목 -->
+      <div class="item">
+        <div class="item-header">
+          <div class="item-index">5.</div>
+          <div class="item-label">보존식은 규정에 따라 정해진 양과 방법으로 채취·보관하고, 보관기간 경과분은 즉시 폐기하고 있다.</div>
+        </div>
+        <div class="item-options">
+          <label><input type="radio" name="item5" value="적합"> 적합</label>
+          <label><input type="radio" name="item5" value="부적합"> 부적합</label>
+        </div>
+        <div class="item-memo">
+          <label for="memo5">메모 / 개선계획</label>
+          <textarea id="memo5" name="memo5" placeholder="예: 보존식 용기 부족 → 추가 구입 후 날짜 라벨 일괄 부착 계획."></textarea>
+        </div>
+      </div>
+
+      <!-- 6번 항목 -->
+      <div class="item">
+        <div class="item-header">
+          <div class="item-index">6.</div>
+          <div class="item-label">알레르기 유발 식재료 제공 시 대상 아동을 확인하고, 대체식 제공 또는 보호자 안내 등 관리가 이루어지고 있다.</div>
+        </div>
+        <div class="item-options">
+          <label><input type="radio" name="item6" value="적합"> 적합</label>
+          <label><input type="radio" name="item6" value="부적합"> 부적합</label>
+        </div>
+        <div class="item-memo">
+          <label for="memo6">메모 / 개선계획</label>
+          <textarea id="memo6" name="memo6" placeholder="예: 알레르기 명단 주기적 업데이트, 교사 교육 강화 예정."></textarea>
+        </div>
+      </div>
+
+      <!-- 7번 항목 -->
+      <div class="item">
+        <div class="item-header">
+          <div class="item-index">7.</div>
+          <div class="item-label">배식대·식판·수저 등은 세척·소독 후 청결하게 보관되며, 급식 제공 전 상태를 확인하고 있다.</div>
+        </div>
+        <div class="item-options">
+          <label><input type="radio" name="item7" value="적합"> 적합</label>
+          <label><input type="radio" name="item7" value="부적합"> 부적합</label>
+        </div>
+        <div class="item-memo">
+          <label for="memo7">메모 / 개선계획</label>
+          <textarea id="memo7" name="memo7" placeholder="예: 건조대 정리, 소독기 사용점검 주 1회 기록 계획."></textarea>
+        </div>
+      </div>
+
+      <!-- 8번 항목 -->
+      <div class="item">
+        <div class="item-header">
+          <div class="item-index">8.</div>
+          <div class="item-label">기타 우리 기관에서 중점적으로 관리하고자 하는 위생·안전 항목.</div>
+        </div>
+        <div class="item-options">
+          <label><input type="radio" name="item8" value="적합"> 적합</label>
+          <label><input type="radio" name="item8" value="부적합"> 부적합</label>
+        </div>
+        <div class="item-memo">
+          <label for="memo8">메모 / 개선계획</label>
+          <textarea id="memo8" name="memo8" placeholder="기관 상황에 맞는 중점 관리 내용을 자유롭게 기록하세요."></textarea>
+        </div>
+      </div>
+
+    </div>
+    <!-- 체크리스트 끝 -->
+
+    <div class="actions">
+      <div id="status" class="status"></div>
+      <button type="button" id="btnSend" class="btn btn-primary">
+        센터에 전송
+      </button>
+    </div>
+
+    <div class="footer-note">
+      바쁘신 중에도 안전하고 위생적인 급식 제공을 위해 애쓰시는 모든 선생님들께 감사드립니다.
+    </div>
+  </div>
+
+  <script>
+    // ★★★ 여기에 실제 발급한 Apps Script 웹앱 URL을 넣으세요 ★★★
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw40B82eQTLhmO8GnJcAFOBa0Tyq3yf5aXq8ZgJCp22W3kI9w5-rregBBcOc0_fRK92jQ/exec';
+
+    const N_ITEMS = 8; // 항목 개수
+
+    function collectFormData() {
+      const orgName   = document.getElementById('orgName').value.trim();
+      const checkDate = document.getElementById('checkDate').value;
+      const checker   = document.getElementById('checker').value.trim();
+
+      const payload = {
+        mode: 'save',
+        orgName,
+        checkDate,
+        checker
+      };
+
+      for (let i = 1; i <= N_ITEMS; i++) {
+        const radios = document.querySelectorAll(`input[name="item${i}"]`);
+        let value = '';
+        radios.forEach(r => { if (r.checked) value = r.value; });
+        const memo = document.getElementById(`memo${i}`)?.value || '';
+
+        payload[`item${i}`] = value;
+        payload[`memo${i}`] = memo;
+      }
+
+      return payload;
+    }
+
+function sendToCenter() {
+  const statusEl = document.getElementById('status');
+  const btn = document.getElementById('btnSend');
+
+  const data = collectFormData();
+
+  if (!data.orgName || !data.checkDate) {
+    statusEl.textContent = '기관명과 점검일을 입력해 주세요.';
+    statusEl.className = 'status err';
+    return;
+  }
+
+  statusEl.textContent = '센터로 전송 중입니다...';
+  statusEl.className = 'status';
+  btn.disabled = true;
+
+  const body = new URLSearchParams(data).toString();
+
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    mode: 'no-cors',                  // ← 이 모드면 응답은 못 읽지만, 요청은 날아간다
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body
+  }).then(() => {
+    statusEl.textContent = '전송 요청을 보냈습니다. 인터넷이 정상이라면 센터 시트에 저장됩니다.';
+    statusEl.className = 'status ok';
+  }).catch(err => {
+    console.error(err);
+    statusEl.textContent = '전송 중 오류가 발생했습니다. 인터넷 연결 상태를 확인해 주세요.';
+    statusEl.className = 'status err';
+  }).finally(() => {
+    btn.disabled = false;
+  });
+}
+
+    document.getElementById('btnSend').addEventListener('click', sendToCenter);
+  </script>
+</body>
+</html>
