@@ -328,13 +328,13 @@
       color: #111827;
     }
 
-    .ref-modal-content {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
+.ref-modal-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;   /* 또는 아예 overflow 줄 삭제 */
+}
 
     .ref-modal-content img {
       max-width: 100%;
@@ -795,3 +795,4 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
