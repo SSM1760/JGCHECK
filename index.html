@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -209,6 +210,61 @@
         align-items: flex-start;
       }
     }
+
+/* ===== 센터 전송 완료 모달 ===== */
+.send-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.send-modal {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px 20px 14px;
+  box-shadow: 0 18px 45px rgba(15,23,42,0.35);
+  max-width: 360px;
+  width: 90%;
+  font-family: inherit;
+}
+
+.send-modal-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.send-modal-body {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.send-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.send-modal-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.send-modal-btn:hover {
+  background: #1d4ed8;
+}
+
   </style>
 </head>
 
@@ -412,6 +468,20 @@
       return payload;
     }
 
+function openSendModal() {
+  const modal = document.getElementById('sendModal');
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+function closeSendModal() {
+  const modal = document.getElementById('sendModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
 function sendToCenter() {
   const statusEl = document.getElementById('status');
   const btn = document.getElementById('btnSend');
@@ -440,6 +510,8 @@ function sendToCenter() {
   }).then(() => {
     statusEl.textContent = '전송 요청을 보냈습니다. 인터넷이 정상이라면 센터 시트에 저장됩니다.';
     statusEl.className = 'status ok';
+
+    openSendModal();   // ✅ 전송 후 모달 열기
   }).catch(err => {
     console.error(err);
     statusEl.textContent = '전송 중 오류가 발생했습니다. 인터넷 연결 상태를 확인해 주세요.';
@@ -450,6 +522,38 @@ function sendToCenter() {
 }
 
     document.getElementById('btnSend').addEventListener('click', sendToCenter);
+
+// 모달 확인 버튼 / 바깥 클릭으로 닫기
+window.addEventListener('DOMContentLoaded', () => {
+  const okBtn = document.getElementById('sendModalOk');
+  const modal = document.getElementById('sendModal');
+
+  if (okBtn) {
+    okBtn.addEventListener('click', closeSendModal);
+  }
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeSendModal();
+      }
+    });
+  }
+});
+
   </script>
+
+<!-- 센터 전송 완료 모달 -->
+<div id="sendModal" class="send-modal-backdrop" style="display:none;">
+  <div class="send-modal">
+    <div class="send-modal-title">센터 전송 완료</div>
+    <div class="send-modal-body">
+      저장이 완료되었습니다.
+    </div>
+    <div class="send-modal-footer">
+      <button type="button" id="sendModalOk" class="send-modal-btn">확인</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
