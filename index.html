@@ -1,5 +1,7 @@
 
 
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -154,6 +156,27 @@
       font-size: 0.85rem;
     }
 
+    .item-ref-row {
+      margin-top: 6px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-ref {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--brand);
+      background: #eff6ff;
+      color: var(--brand);
+      font-size: 0.8rem;
+      cursor: pointer;
+      line-height: 1.2;
+    }
+
+    .btn-ref:hover {
+      background: #dbeafe;
+    }
+
     .actions {
       margin-top: 20px;
       display: flex;
@@ -265,6 +288,63 @@
   background: #1d4ed8;
 }
 
+    /* 참고자료 모달 */
+    .ref-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;               /* 기본은 숨김 */
+      justify-content: center;
+      align-items: center;
+      z-index: 900;                /* sendModal보다 앞/뒤로 조절하고 싶으면 숫자만 조정 */
+    }
+
+    .ref-modal {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
+      padding: 10px 10px 14px;
+      max-width: min(90vw, 210mm);   /* A4 가로(210mm)를 기준으로 */
+      max-height: min(90vh, 297mm);  /* A4 세로(297mm)를 기준으로 */
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .ref-modal-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 4px;
+    }
+
+    .ref-modal-close {
+      border: none;
+      background: transparent;
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #6b7280;
+    }
+
+    .ref-modal-close:hover {
+      color: #111827;
+    }
+
+    .ref-modal-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .ref-modal-content img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;  /* A4 비율 이미지가 잘리지 않도록 */
+      display: block;
+    }
+
   </style>
 </head>
 
@@ -304,6 +384,18 @@
           <label><input type="radio" name="item1" value="적합"> 적합</label>
           <label><input type="radio" name="item1" value="부적합"> 부적합</label>
         </div>
+
+        <!-- 🔍 참고자료 버튼 (1번 문항) -->
+        <div class="item-ref-row">
+          <button
+            type="button"
+            class="btn-ref"
+            data-ref-img="./img/ref/item1_a4.png"
+          >
+            참고자료
+          </button>
+        </div>
+
         <div class="item-memo">
           <label for="memo1">메모 / 개선계획</label>
           <textarea id="memo1" name="memo1" placeholder="예: 배식실 출입구 주변 주 1회 추가 청소 예정(○월 ○일까지)."></textarea>
@@ -320,6 +412,18 @@
           <label><input type="radio" name="item2" value="적합"> 적합</label>
           <label><input type="radio" name="item2" value="부적합"> 부적합</label>
         </div>
+
+        <!-- 🔍 참고자료 버튼 (2번 문항) -->
+        <div class="item-ref-row">
+          <button
+            type="button"
+            class="btn-ref"
+            data-ref-img="./img/ref/item1_a4.png"
+          >
+            참고자료
+          </button>
+        </div>
+
         <div class="item-memo">
           <label for="memo2">메모 / 개선계획</label>
           <textarea id="memo2" name="memo2" placeholder="예: 일부 냉장 식재 라벨 누락 → 전담자 지정, 매주 월요일 점검."></textarea>
@@ -336,6 +440,18 @@
           <label><input type="radio" name="item3" value="적합"> 적합</label>
           <label><input type="radio" name="item3" value="부적합"> 부적합</label>
         </div>
+
+        <!-- 🔍 참고자료 버튼 (3번 문항) -->
+        <div class="item-ref-row">
+          <button
+            type="button"
+            class="btn-ref"
+            data-ref-img="./img/ref/item1_a4.png"
+          >
+            참고자료
+          </button>
+        </div>
+
         <div class="item-memo">
           <label for="memo3">메모 / 개선계획</label>
           <textarea id="memo3" name="memo3" placeholder="예: 손 씻기 교육자료 게시, 월 1회 실습교육 실시 계획."></textarea>
@@ -352,6 +468,18 @@
           <label><input type="radio" name="item4" value="적합"> 적합</label>
           <label><input type="radio" name="item4" value="부적합"> 부적합</label>
         </div>
+
+        <!-- 🔍 참고자료 버튼 (4번 문항) -->
+        <div class="item-ref-row">
+          <button
+            type="button"
+            class="btn-ref"
+            data-ref-img="./img/ref/item1_a4.png"
+          >
+            참고자료
+          </button>
+        </div>
+
         <div class="item-memo">
           <label for="memo4">메모 / 개선계획</label>
           <textarea id="memo4" name="memo4" placeholder="예: 색깔별 도마 표시 테이프 교체, 구분표 부착 예정."></textarea>
@@ -368,6 +496,18 @@
           <label><input type="radio" name="item5" value="적합"> 적합</label>
           <label><input type="radio" name="item5" value="부적합"> 부적합</label>
         </div>
+
+        <!-- 🔍 참고자료 버튼 (5번 문항) -->
+        <div class="item-ref-row">
+          <button
+            type="button"
+            class="btn-ref"
+            data-ref-img="./img/ref/item1_a4.png"
+          >
+            참고자료
+          </button>
+        </div>
+
         <div class="item-memo">
           <label for="memo5">메모 / 개선계획</label>
           <textarea id="memo5" name="memo5" placeholder="예: 보존식 용기 부족 → 추가 구입 후 날짜 라벨 일괄 부착 계획."></textarea>
@@ -384,6 +524,18 @@
           <label><input type="radio" name="item6" value="적합"> 적합</label>
           <label><input type="radio" name="item6" value="부적합"> 부적합</label>
         </div>
+
+        <!-- 🔍 참고자료 버튼 (6번 문항) -->
+        <div class="item-ref-row">
+          <button
+            type="button"
+            class="btn-ref"
+            data-ref-img="./img/ref/item1_a4.png"
+          >
+            참고자료
+          </button>
+        </div>
+
         <div class="item-memo">
           <label for="memo6">메모 / 개선계획</label>
           <textarea id="memo6" name="memo6" placeholder="예: 알레르기 명단 주기적 업데이트, 교사 교육 강화 예정."></textarea>
@@ -400,6 +552,18 @@
           <label><input type="radio" name="item7" value="적합"> 적합</label>
           <label><input type="radio" name="item7" value="부적합"> 부적합</label>
         </div>
+
+        <!-- 🔍 참고자료 버튼 (7번 문항) -->
+        <div class="item-ref-row">
+          <button
+            type="button"
+            class="btn-ref"
+            data-ref-img="./img/ref/item1_a4.png"
+          >
+            참고자료
+          </button>
+        </div>
+
         <div class="item-memo">
           <label for="memo7">메모 / 개선계획</label>
           <textarea id="memo7" name="memo7" placeholder="예: 건조대 정리, 소독기 사용점검 주 1회 기록 계획."></textarea>
@@ -416,6 +580,18 @@
           <label><input type="radio" name="item8" value="적합"> 적합</label>
           <label><input type="radio" name="item8" value="부적합"> 부적합</label>
         </div>
+
+        <!-- 🔍 참고자료 버튼 (8번 문항) -->
+        <div class="item-ref-row">
+          <button
+            type="button"
+            class="btn-ref"
+            data-ref-img="./img/ref/item1_a4.png"
+          >
+            참고자료
+          </button>
+        </div>
+
         <div class="item-memo">
           <label for="memo8">메모 / 개선계획</label>
           <textarea id="memo8" name="memo8" placeholder="기관 상황에 맞는 중점 관리 내용을 자유롭게 기록하세요."></textarea>
@@ -540,7 +716,71 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// ✅ 참고자료 모달 열기/닫기
+window.addEventListener('DOMContentLoaded', () => {
+  const refModal    = document.getElementById('refModal');
+  const refImg      = document.getElementById('refModalImg');
+  const refCloseBtn = document.getElementById('refModalClose');
+  const refButtons  = document.querySelectorAll('.btn-ref');
+
+  if (!refModal || !refImg) return;
+
+  const openRefModal = (imgUrl) => {
+    if (!imgUrl) return;
+    refImg.src = imgUrl;
+    refModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';  // 배경 스크롤 잠금
+  };
+
+  const closeRefModal = () => {
+    refModal.style.display = 'none';
+    refImg.src = '';
+    document.body.style.overflow = '';        // 스크롤 복원
+  };
+
+  // 각 "참고자료" 버튼 클릭 → 모달 열기
+  refButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const imgUrl = btn.getAttribute('data-ref-img');
+      openRefModal(imgUrl);
+    });
+  });
+
+  // 닫기 버튼
+  if (refCloseBtn) {
+    refCloseBtn.addEventListener('click', closeRefModal);
+  }
+
+  // 배경 클릭 시 닫기
+  refModal.addEventListener('click', (e) => {
+    if (e.target === refModal) {
+      closeRefModal();
+    }
+  });
+
+  // ESC 키로 닫기
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && refModal.style.display === 'flex') {
+      closeRefModal();
+    }
+  });
+});
+
   </script>
+
+  <!-- 🔍 참고자료 모달 -->
+  <div id="refModal" class="ref-modal-backdrop">
+    <div class="ref-modal" role="dialog" aria-modal="true" aria-label="참고자료">
+      <div class="ref-modal-header">
+        <button type="button" id="refModalClose" class="ref-modal-close" aria-label="닫기">
+          ×
+        </button>
+      </div>
+      <div class="ref-modal-content">
+        <img id="refModalImg" src="" alt="참고자료 이미지" />
+      </div>
+    </div>
+  </div>
 
 <!-- 센터 전송 완료 모달 -->
 <div id="sendModal" class="send-modal-backdrop" style="display:none;">
