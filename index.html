@@ -1,11 +1,13 @@
 
 
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>어린이집·유치원 위생·안전 자체점검 체크리스트</title>
+  <title>어린이 급식소 위생·안전 자가 점검 체크리스트</title>
 
   <style>
     :root {
@@ -67,7 +69,8 @@
     }
 
     .info-row input[type="text"],
-    .info-row input[type="date"] {
+      .info-row input[type="date"],
+      .info-row input[type="tel"] {
       border: 1px solid var(--line);
       border-radius: 6px;
       padding: 4px 8px;
@@ -149,7 +152,7 @@
       border: 1px solid var(--line);
       padding: 6px 8px;
       resize: vertical;
-      min-height: 48px;
+      min-height: 96px;
       font-family: inherit;
       font-size: 0.85rem;
     }
@@ -348,10 +351,8 @@
 
 <body>
   <div class="wrapper">
-    <h1>어린이집·유치원 위생·안전 자체점검 체크리스트</h1>
-    <div class="subtitle">※ 각 항목별로 적합·부적합을 선택하고, 필요한 경우 아래 메모란에 개선사항을 기록해 주세요.</div>
-
-    <!-- 기본 정보 -->
+    <h1>어린이 급식소 위생·안전 자가 점검 체크리스트</h1>
+<!-- 기본 정보 -->
     <div class="info-row">
       <label>기관명
         <input type="text" id="orgName" placeholder="예: ○○어린이집" />
@@ -362,11 +363,15 @@
       <label>점검자
         <input type="text" id="checker" placeholder="이름" />
       </label>
+<label>
+  연락처
+  <input type="tel" id="checkerPhone" name="checkerPhone" placeholder="연락처" inputmode="tel" />
+</label>
     </div>
 
     <div class="guide-box">
-      ✔ “부적합”을 선택한 항목은 아래 메모칸에 <strong>개선 계획(무엇을, 언제까지, 어떻게)</strong>를 간단히 적어 주세요.<br>
-      ✔ 아래 <strong>“센터에 전송” 버튼</strong>을 누르면 점검 결과가 센터 구글시트에 자동 저장됩니다.
+      각 항목별로 적합 여부를 선택하고, 부적합 항목은 메모란에 개선계획을 작성해 주세요.<br>
+작성 후 아래 전송 버튼을 누르시면 작성하신 내용은 기관 담당자가 순회방문 시 확인해 드리겠습니다.
     </div>
 
     <!-- 체크리스트 시작 -->
@@ -395,8 +400,7 @@
         </div>
 
         <div class="item-memo">
-          <label for="memo1">메모 / 개선계획</label>
-          <textarea id="memo1" name="memo1" placeholder="예: 배식실 출입구 주변 주 1회 추가 청소 예정(○월 ○일까지)."></textarea>
+<textarea id="memo1" name="memo1" placeholder="예: 배식실 출입구 주변 주 1회 추가 청소 예정(○월 ○일까지)."></textarea>
         </div>
       </div>
 
@@ -423,8 +427,7 @@
         </div>
 
         <div class="item-memo">
-          <label for="memo2">메모 / 개선계획</label>
-          <textarea id="memo2" name="memo2" placeholder="예: 일부 냉장 식재 라벨 누락 → 전담자 지정, 매주 월요일 점검."></textarea>
+<textarea id="memo2" name="memo2" placeholder="예: 일부 냉장 식재 라벨 누락 → 전담자 지정, 매주 월요일 점검."></textarea>
         </div>
       </div>
 
@@ -451,8 +454,7 @@
         </div>
 
         <div class="item-memo">
-          <label for="memo3">메모 / 개선계획</label>
-          <textarea id="memo3" name="memo3" placeholder="예: 손 씻기 교육자료 게시, 월 1회 실습교육 실시 계획."></textarea>
+<textarea id="memo3" name="memo3" placeholder="예: 손 씻기 교육자료 게시, 월 1회 실습교육 실시 계획."></textarea>
         </div>
       </div>
 
@@ -479,8 +481,7 @@
         </div>
 
         <div class="item-memo">
-          <label for="memo4">메모 / 개선계획</label>
-          <textarea id="memo4" name="memo4" placeholder="예: 색깔별 도마 표시 테이프 교체, 구분표 부착 예정."></textarea>
+<textarea id="memo4" name="memo4" placeholder="예: 색깔별 도마 표시 테이프 교체, 구분표 부착 예정."></textarea>
         </div>
       </div>
 
@@ -507,8 +508,7 @@
         </div>
 
         <div class="item-memo">
-          <label for="memo5">메모 / 개선계획</label>
-          <textarea id="memo5" name="memo5" placeholder="예: 보존식 용기 부족 → 추가 구입 후 날짜 라벨 일괄 부착 계획."></textarea>
+<textarea id="memo5" name="memo5" placeholder="예: 보존식 용기 부족 → 추가 구입 후 날짜 라벨 일괄 부착 계획."></textarea>
         </div>
       </div>
 
@@ -535,8 +535,7 @@
         </div>
 
         <div class="item-memo">
-          <label for="memo6">메모 / 개선계획</label>
-          <textarea id="memo6" name="memo6" placeholder="예: 알레르기 명단 주기적 업데이트, 교사 교육 강화 예정."></textarea>
+<textarea id="memo6" name="memo6" placeholder="예: 알레르기 명단 주기적 업데이트, 교사 교육 강화 예정."></textarea>
         </div>
       </div>
 
@@ -563,8 +562,7 @@
         </div>
 
         <div class="item-memo">
-          <label for="memo7">메모 / 개선계획</label>
-          <textarea id="memo7" name="memo7" placeholder="예: 건조대 정리, 소독기 사용점검 주 1회 기록 계획."></textarea>
+<textarea id="memo7" name="memo7" placeholder="예: 건조대 정리, 소독기 사용점검 주 1회 기록 계획."></textarea>
         </div>
       </div>
 
@@ -591,8 +589,7 @@
         </div>
 
         <div class="item-memo">
-          <label for="memo8">메모 / 개선계획</label>
-          <textarea id="memo8" name="memo8" placeholder="기관 상황에 맞는 중점 관리 내용을 자유롭게 기록하세요."></textarea>
+<textarea id="memo8" name="memo8" placeholder="기관 상황에 맞는 중점 관리 내용을 자유롭게 기록하세요."></textarea>
         </div>
       </div>
 
@@ -602,12 +599,11 @@
     <div class="actions">
       <div id="status" class="status"></div>
       <button type="button" id="btnSend" class="btn btn-primary">
-        센터에 전송
-      </button>
+        전송</button>
     </div>
 
     <div class="footer-note">
-      바쁘신 중에도 안전하고 위생적인 급식 제공을 위해 애쓰시는 모든 선생님들께 감사드립니다.
+      건강한 급식 제공을 위해 힘써주셔서 감사드립니다.
     </div>
   </div>
 
@@ -622,11 +618,13 @@
       const checkDate = document.getElementById('checkDate').value;
       const checker   = document.getElementById('checker').value.trim();
 
-      const payload = {
+            const checkerPhone = document.getElementById('checkerPhone')?.value.trim() || '';
+const payload = {
         mode: 'save',
         orgName,
         checkDate,
-        checker
+        checker,
+        checkerPhone
       };
 
       for (let i = 1; i <= N_ITEMS; i++) {
