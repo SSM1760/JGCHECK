@@ -614,33 +614,33 @@
 
     const N_ITEMS = 8; // 항목 개수
 
-    function collectFormData() {
-      const orgName   = document.getElementById('orgName').value.trim();
-      const checkDate = document.getElementById('checkDate').value;
-      const checker   = document.getElementById('checker').value.trim();
-    checkerPhone: (document.getElementById('checkerPhone')?.value || '').trim(), // ✅ 추가
+function collectFormData() {
+  const orgName   = document.getElementById('orgName').value.trim();
+  const checkDate = document.getElementById('checkDate').value;
+  const checker   = document.getElementById('checker').value.trim();
 
-            const checkerPhone = document.getElementById('checkerPhone')?.value.trim() || '';
-const payload = {
-        mode: 'save',
-        orgName,
-        checkDate,
-        checker,
-        checkerPhone
-      };
+  // ✅ 연락처 값 읽기(없으면 빈값)
+  const checkerPhone = (document.getElementById('checkerPhone')?.value || '').trim();
 
-      for (let i = 1; i <= N_ITEMS; i++) {
-        const radios = document.querySelectorAll(`input[name="item${i}"]`);
-        let value = '';
-        radios.forEach(r => { if (r.checked) value = r.value; });
-        const memo = document.getElementById(`memo${i}`)?.value || '';
+  const payload = {
+    mode: 'save',
+    orgName,
+    checkDate,
+    checker,
+    checkerPhone, // ✅ 여기! payload 안에 넣는 것
+  };
 
-        payload[`item${i}`] = value;
-        payload[`memo${i}`] = memo;
-      }
+  for (let i = 1; i <= N_ITEMS; i++) {
+    const radios = document.querySelectorAll(`input[name="item${i}"]`);
+    let value = '';
+    radios.forEach(r => { if (r.checked) value = r.value; });
 
-      return payload;
-    }
+    payload[`item${i}`] = value;
+    payload[`memo${i}`] = (document.getElementById(`memo${i}`)?.value || '').trim();
+  }
+
+  return payload;
+}
 
 function openSendModal() {
   const modal = document.getElementById('sendModal');
@@ -795,5 +795,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
