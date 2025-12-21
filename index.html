@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -617,6 +618,7 @@
       const orgName   = document.getElementById('orgName').value.trim();
       const checkDate = document.getElementById('checkDate').value;
       const checker   = document.getElementById('checker').value.trim();
+    checkerPhone: (document.getElementById('checkerPhone')?.value || '').trim(), // ✅ 추가
 
             const checkerPhone = document.getElementById('checkerPhone')?.value.trim() || '';
 const payload = {
