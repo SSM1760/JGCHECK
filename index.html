@@ -1,4 +1,8 @@
 
+
+
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -174,6 +178,42 @@
     .btn-ref:hover {
       background: #dbeafe;
     }
+
+/* ✅ 문항별 첨부파일 UI */
+.item-file-row{
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+}
+.btn-file{
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.btn-file:hover{ background:#f3f4f6; }
+.file-name{
+  font-size: 0.82rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 260px;
+}
+.btn-file-clear{
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #b91c1c;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.btn-file-clear:hover{ background:#ffe4e6; }
 
     .actions {
       margin-top: 20px;
@@ -659,9 +699,105 @@
 
   <script>
     // ★★★ 여기에 실제 발급한 Apps Script 웹앱 URL을 넣으세요 ★★★
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxS8ePVvKatSJs73d-YmQC64xIYBzEWHwWskPJMIhIzcbaVs4GSr7CKWPFkuGA-jKms9g/exec';
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwL5tRcMHfe_H0rS5oNs6myrKEfFFP4pFgBxGSYBi5BycZIXWukzHIfOBZHmCse5Rr7CA/exec';
 
     const N_ITEMS = 10; // 항목 개수
+
+// ✅ 문항별 첨부파일(이미지) 저장소: { [i]: {name,mime,base64,size} }
+const attachMap = {};
+
+// 파일명에 들어가면 안되는 문자 제거
+function sanitizeFileName_(name){
+  return String(name || '')
+    .replace(/[\\\/:*?"<>|]/g, '_')
+    .trim();
+}
+
+// File -> base64 (dataURL의 "," 뒤만 사용)
+function readFileAsBase64_(file){
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => {
+      const s = String(fr.result || '');
+      const base64 = s.includes(',') ? s.split(',')[1] : s;
+      resolve(base64);
+    };
+    fr.onerror = () => reject(fr.error || new Error('파일 읽기 실패'));
+    fr.readAsDataURL(file);
+  });
+}
+
+// ✅ memo{i} 앞에 "첨부파일" UI를 자동으로 끼워넣기
+function setupAttachmentUI(){
+  for (let i = 1; i <= N_ITEMS; i++){
+    const memoEl = document.getElementById(`memo${i}`);
+    if(!memoEl) continue;
+
+    const memoWrap = memoEl.closest('.item-memo');
+    if(!memoWrap) continue;
+
+    // 이미 넣었으면 스킵
+    if (memoWrap.previousElementSibling && memoWrap.previousElementSibling.classList.contains('item-file-row')) {
+      continue;
+    }
+
+    const row = document.createElement('div');
+    row.className = 'item-file-row';
+    row.innerHTML = `
+      <button type="button" class="btn-file" data-file-btn="${i}">첨부파일</button>
+      <span class="file-name" id="fileName${i}">선택 없음</span>
+      <input type="file" id="fileInput${i}" accept="image/*" style="display:none" />
+      <button type="button" class="btn-file-clear" id="fileClear${i}" style="display:none">삭제</button>
+    `;
+
+    memoWrap.parentNode.insertBefore(row, memoWrap);
+
+    const btn   = row.querySelector(`[data-file-btn="${i}"]`);
+    const input = row.querySelector(`#fileInput${i}`);
+    const name  = row.querySelector(`#fileName${i}`);
+    const clear = row.querySelector(`#fileClear${i}`);
+
+    btn.addEventListener('click', () => input.click());
+
+    input.addEventListener('change', async () => {
+      const file = input.files && input.files[0];
+      if(!file){
+        return;
+      }
+
+      // ✅ 용량 제한(너무 큰 파일 방지) — 필요없으면 지워도 됨
+      const MAX = 6 * 1024 * 1024; // 6MB
+      if(file.size > MAX){
+        alert(`첨부파일이 너무 큽니다. (최대 6MB)\n현재: ${(file.size/1024/1024).toFixed(2)}MB`);
+        input.value = '';
+        return;
+      }
+
+      try{
+        const base64 = await readFileAsBase64_(file);
+        attachMap[i] = {
+          name: sanitizeFileName_(file.name || `item${i}.png`),
+          mime: file.type || 'application/octet-stream',
+          base64,
+          size: file.size
+        };
+        name.textContent = attachMap[i].name;
+        clear.style.display = 'inline-block';
+      }catch(err){
+        console.error(err);
+        alert('첨부파일을 읽는 중 오류가 발생했습니다.');
+        input.value = '';
+      }
+    });
+
+    clear.addEventListener('click', () => {
+      delete attachMap[i];
+      input.value = '';
+      name.textContent = '선택 없음';
+      clear.style.display = 'none';
+    });
+  }
+}
 
 function collectFormData() {
   const orgName   = document.getElementById('orgName').value.trim();
@@ -679,14 +815,22 @@ function collectFormData() {
     checkerPhone, // ✅ 여기! payload 안에 넣는 것
   };
 
-  for (let i = 1; i <= N_ITEMS; i++) {
-    const radios = document.querySelectorAll(`input[name="item${i}"]`);
-    let value = '';
-    radios.forEach(r => { if (r.checked) value = r.value; });
+for (let i = 1; i <= N_ITEMS; i++) {
+  const radios = document.querySelectorAll(`input[name="item${i}"]`);
+  let value = '';
+  radios.forEach(r => { if (r.checked) value = r.value; });
 
-    payload[`item${i}`] = value;
-    payload[`memo${i}`] = (document.getElementById(`memo${i}`)?.value || '').trim();
+  payload[`item${i}`] = value;
+  payload[`memo${i}`] = (document.getElementById(`memo${i}`)?.value || '').trim();
+
+  // ✅ 첨부파일(있을 때만 전송)
+  const a = attachMap[i];
+  if (a && a.base64) {
+    payload[`file${i}Name`]   = a.name;
+    payload[`file${i}Mime`]   = a.mime;
+    payload[`file${i}Base64`] = a.base64; // dataURL 헤더 제거된 base64 본문
   }
+}
 
   return payload;
 }
@@ -761,6 +905,8 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+setupAttachmentUI(); // ✅ 문항별 첨부파일 UI 자동 삽입
 });
 
 // ✅ 참고자료 모달 열기/닫기
