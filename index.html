@@ -1,8 +1,5 @@
 
 
-
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -324,6 +321,66 @@
 
 .send-modal-btn:hover {
   background: #1d4ed8;
+}
+
+/* ===== 저장(전송) 로딩 피넛 ===== */
+.saving-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000; /* sendModal보다 살짝 위 */
+}
+
+.saving-card{
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  width: min(380px, 92vw);
+  box-shadow: 0 18px 45px rgba(15,23,42,0.35);
+  border: 1px solid rgba(229,231,235,0.9);
+  text-align: center;
+}
+
+.peanut-spinner{
+  width: 54px;
+  height: 54px;
+  margin: 2px auto 12px;
+  position: relative;
+  animation: peanutSpin 0.9s linear infinite;
+}
+
+.peanut-spinner::before,
+.peanut-spinner::after{
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  top: 13px;
+  background: #f59e0b;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.peanut-spinner::before{ left: 5px; }
+.peanut-spinner::after { left: 21px; background: #fbbf24; }
+
+@keyframes peanutSpin{
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.saving-text{
+  font-size: 0.95rem;
+  color: #111827;
+  line-height: 1.5;
+}
+
+.saving-sub{
+  font-size: 0.86rem;
+  color: #6b7280;
 }
 
     /* 참고자료 모달 */
@@ -835,6 +892,20 @@ for (let i = 1; i <= N_ITEMS; i++) {
   return payload;
 }
 
+function showSaving(){
+  const back = document.getElementById('savingBackdrop');
+  if (!back) return;
+  back.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function hideSaving(){
+  const back = document.getElementById('savingBackdrop');
+  if (!back) return;
+  back.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
 function openSendModal() {
   const modal = document.getElementById('sendModal');
   if (modal) {
@@ -865,6 +936,8 @@ function sendToCenter() {
   statusEl.className = 'status';
   btn.disabled = true;
 
+showSaving();
+
   const body = new URLSearchParams(data).toString();
 
   fetch(WEB_APP_URL, {
@@ -884,6 +957,7 @@ function sendToCenter() {
     statusEl.textContent = '전송 중 오류가 발생했습니다. 인터넷 연결 상태를 확인해 주세요.';
     statusEl.className = 'status err';
   }).finally(() => {
+hideSaving();
     btn.disabled = false;
   });
 }
@@ -974,6 +1048,17 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
   </div>
+
+<!-- ✅ 저장(전송) 로딩 피넛 -->
+<div id="savingBackdrop" class="saving-backdrop" style="display:none;" role="status" aria-live="polite">
+  <div class="saving-card">
+    <div class="peanut-spinner" aria-label="로딩"></div>
+    <div class="saving-text">
+      저장 중입니다. 잠시만 기다려주세요.<br>
+      <span class="saving-sub">첨부파일이 많을수록 저장 시간이 길어집니다</span>
+    </div>
+  </div>
+</div>
 
 <!-- 센터 전송 완료 모달 -->
 <div id="sendModal" class="send-modal-backdrop" style="display:none;">
